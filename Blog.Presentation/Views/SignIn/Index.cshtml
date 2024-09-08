@@ -1,0 +1,16 @@
+﻿@model SignInViewModel
+
+<form method="post" asp-controller="SignIn" asp-action="Index">
+    <div>
+        <input asp-for="Email" type="email" placeholder="Email" required />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <input asp-for="Password" type="password" placeholder="Пароль" required />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div>
+        <button class="button-primary" type="submit">Вход</button>
+    </div>
+</form>
