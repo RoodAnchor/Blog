@@ -1,11 +1,10 @@
-﻿namespace Blog.Data.Repositories
+﻿namespace Blog.Data.Repositories;
+
+public interface IRepository<T> where T : class
 {
-    public interface IRepository<T> where T : class
-    {
-        IEnumerable<T> GetAll();
-        Task Create(T item);
-        Task<T> Get(int id);
-        Task Update(T item);
-        Task Delete(T item);
-    }
+    IEnumerable<T> GetAll();
+    Task Create(T item);
+    Task<T?> Get(int id);
+    Task Update(T item);
+    Task Delete(T item);
 }

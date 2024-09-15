@@ -1,51 +1,50 @@
 ﻿using Blog.Data.DB;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Data.Repositories
+namespace Blog.Data.Repositories;
+
+public class BaseRepository<T> : IRepository<T> where T : class
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    protected DbContext _dbContext;
+
+    public DbSet<T> Set { get; set; }
+
+    public BaseRepository(BlogDbContext dbContext)
     {
-        protected DbContext _dbContext;
+        _dbContext = dbContext;
 
-        public DbSet<T> Set { get; set; }
+        var set = _dbContext.Set<T>();
 
-        public BaseRepository(BlogDbContext dbContext) 
-        {
-            _dbContext = dbContext;
+        set.Load();
 
-            var set = _dbContext.Set<T>();
+        Set = set;
+    }
 
-            set.Load();
+    public IEnumerable<T> GetAll()
+    {
+        return Set;
+    }
 
-            Set = set;
-        }
+    public async Task Create(T item)
+    {
+        await Set.AddAsync(item);
+        await _dbContext.SaveChangesAsync();
+    }
 
-        public IEnumerable<T> GetAll()
-        {
-            return Set;
-        }
+    public async Task<T?> Get(int id)
+    {
+        return await Set.FindAsync(id);
+    }
 
-        public async Task Create(T item) 
-        {
-            await Set.AddAsync(item);
-            await _dbContext.SaveChangesAsync();
-        }
+    public async Task Update(T item)
+    {
+        Set.Update(item);
+        await _dbContext.SaveChangesAsync();
+    }
 
-        public async Task<T> Get(int id)
-        {
-            return await Set.FindAsync(id);
-        }
-
-        public async Task Update(T item)
-        {
-            Set.Update(item);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task Delete(T item)
-        {
-            Set.Remove(item);
-            await _dbContext.SaveChangesAsync();
-        }
+    public async Task Delete(T item)
+    {
+        Set.Remove(item);
+        await _dbContext.SaveChangesAsync();
     }
 }

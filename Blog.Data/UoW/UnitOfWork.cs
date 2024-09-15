@@ -2,44 +2,43 @@
 using Blog.Data.Repositories;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Blog.Data.UoW
+namespace Blog.Data.UoW;
+
+public class UnitOfWork : IUnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    private readonly BlogDbContext _blogDbContext;
+    private Dictionary<Type, object> _repositories;
+
+    public UnitOfWork(BlogDbContext blogDbContext) =>
+        _blogDbContext = blogDbContext;
+
+    public void Dispose() { }
+
+    public IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = true) where TEntity : class
     {
-        private readonly BlogDbContext _blogDbContext;
-        private Dictionary<Type, object> _repositories;
+        if (_repositories == null)
+            _repositories = new Dictionary<Type, object>();
 
-        public UnitOfWork(BlogDbContext blogDbContext) =>
-            _blogDbContext = blogDbContext;
-
-        public void Dispose() { }
-
-        public IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = true) where TEntity : class 
+        if (hasCustomRepository)
         {
-            if (_repositories == null) 
-                _repositories = new Dictionary<Type, object>();
+            var customRepository = _blogDbContext.GetService<IRepository<TEntity>>();
 
-            if (hasCustomRepository)
+            if (customRepository != null)
             {
-                var customRepository = _blogDbContext.GetService<IRepository<TEntity>>();
-
-                if (customRepository != null)
-                {
-                    return customRepository;
-                }
+                return customRepository;
             }
-
-            var type = typeof(TEntity);
-
-            if (!_repositories.ContainsKey(type))
-                _repositories[type] = new BaseRepository<TEntity>(_blogDbContext);
-
-            return (IRepository<TEntity>)_repositories[type];
         }
 
-        public async Task SaveChanges(bool ensureAutoHistory = false)
-        {
-            await _blogDbContext.SaveChangesAsync();
-        }
+        var type = typeof(TEntity);
+
+        if (!_repositories.ContainsKey(type))
+            _repositories[type] = new BaseRepository<TEntity>(_blogDbContext);
+
+        return (IRepository<TEntity>)_repositories[type];
+    }
+
+    public async Task SaveChanges(bool ensureAutoHistory = false)
+    {
+        await _blogDbContext.SaveChangesAsync();
     }
 }

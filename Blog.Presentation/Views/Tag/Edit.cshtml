@@ -1,0 +1,19 @@
+﻿@model TagModel
+
+@{
+    ViewData["Title"] = "Редактирование тэга";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-action="Edit" asp-controller="Tag">
+    <div class="mb-3">
+        <label for="name">Название</label>
+        <input asp-for="Name" type="text" id="name" class="form-control" required />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Добавить</button>
+    <div>
+        <a asp-area="" class="link-primary" asp-controller="Tag" asp-action="Index">Список всех тэгов</a>
+    </div>
+</form>

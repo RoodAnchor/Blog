@@ -1,34 +1,45 @@
 ﻿@model UserModel
 
+@{
+    ViewData["Title"] = "Регистрация пользователя";
+}
+
+<h1>@ViewData["Title"]</h1>
+
 <form method="post" asp-controller="SignUp" asp-action="Index">
-    <div>
-        <input asp-for="SecondName" type="text" placeholder="Фамилия" required />
+    <div class="mb-3">
+        <label form="secondName">Фамилия</label>
+        <input asp-for="SecondName" id="secondName" class="form-control" type="text" required />
         <span asp-validation-for="SecondName"></span>
     </div>
-    <div>
-        <input asp-for="FirstName" type="text" placeholder="Имя" required />
+    <div class="mb-3">
+        <label form="firstName">Имя</label>
+        <input asp-for="FirstName" id="firstName" class="form-control" type="text" required />
         <span asp-validation-for="FirstName"></span>
     </div>
-    <div>
-        <input asp-for="PatronymicName" type="text" placeholder="Отчество" />
-    </div>
-    <div>
-        <input asp-for="Email" type="email" placeholder="Email" required />
+    <div class="mb-3">
+        <label form="patronymicName">Отчество</label>
+        <input asp-for="PatronymicName" id="patronymicName" class="form-control" type="text" />
+    </div class="mb-3">
+    <div class="mb-3">
+        <label form="email">Email</label>
+        <input asp-for="Email" type="email" id="email" class="form-control" required />
         <span asp-validation-for="Email"></span>
     </div>
-    <div>
-        <input asp-for="Password" type="password" placeholder="Пароль" required />
+    <div class="mb-3">
+        <label form="password">Пароль</label>
+        <input asp-for="Password" type="password" id="password" class="form-control" required />
         <span asp-validation-for="Password"></span>
     </div>
-    <div>
-        <textarea asp-for="About" placeholder="О себе"></textarea>
+    <div class="mb-3">
+        <label form="about">О себе</label>
+        <textarea asp-for="About" id="about" class="form-control" ></textarea>
     </div>
-    <div>
-        <input asp-for="BirthDate" type="date" placeholder="Пароль" required />
+    <div class="mb-3">
+        <label form="birthDate">Дата рождения</label>
+        <input asp-for="BirthDate" type="date" id="birthDate" class="form-control" required />
         <span asp-validation-for="BirthDate"></span>
     </div>
 
-    <div>
-        <button class="button-primary" type="submit">Вход</button>
-    </div>
+    <button class="btn btn-primary" type="submit">Зарегестрироваться</button>
 </form>

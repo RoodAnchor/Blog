@@ -1,7 +1,6 @@
-﻿namespace Blog.Logic.Exceptions
+﻿namespace Blog.Logic.Exceptions;
+
+public class UserNotFoundException : Exception
 {
-    public class UserNotFoundException : Exception
-    {
-        public UserNotFoundException() : base("Пользователь не найден") { }
-    }
+    public UserNotFoundException() : base("Пользователь не найден") { }
 }

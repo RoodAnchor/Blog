@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Blog.Data.Entities
+namespace Blog.Data.Entities;
+
+public class UserRoleEntity
 {
-    public class UserRoleEntity
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        [Column("UserId")]
-        public int UsersId { get; set; }
+    [Column("UserId")]
+    public int UsersId { get; set; }
 
-        [Column("RoleId")]
-        public int RolesId { get; set; }
-    }
+    [Column("RoleId")]
+    public int RolesId { get; set; }
 }

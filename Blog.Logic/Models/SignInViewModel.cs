@@ -1,8 +1,7 @@
-﻿namespace Blog.Logic.Models
+﻿namespace Blog.Logic.Models;
+
+public class SignInViewModel
 {
-    public class SignInViewModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+    public string Email { get; set; }
+    public string Password { get; set; }
 }

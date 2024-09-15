@@ -1,7 +1,6 @@
-﻿namespace Blog.Logic.Exceptions
+﻿namespace Blog.Logic.Exceptions;
+
+public class UserExistException : Exception
 {
-    public class UserExistException : Exception
-    {
-        public UserExistException() : base("Пользователь уже зарегестрирован") { }
-    }
+    public UserExistException() : base("Пользователь уже зарегестрирован") { }
 }

@@ -2,14 +2,14 @@
 using Blog.Data.Entities;
 using Blog.Logic.Models;
 
-namespace Blog.Logic.Mapping
+namespace Blog.Logic.Mapping;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile() 
-        {
-            CreateMap<UserEntity, UserModel>().ReverseMap();
-            CreateMap<RoleEntity, RoleModel>().ReverseMap();
-        }
+        CreateMap<UserEntity, UserModel>().ReverseMap();
+        CreateMap<RoleEntity, RoleModel>().ReverseMap();
+        CreateMap<TagEntity, TagModel>().ReverseMap();
     }
 }

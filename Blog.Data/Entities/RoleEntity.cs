@@ -1,9 +1,9 @@
-﻿namespace Blog.Data.Entities
+﻿namespace Blog.Data.Entities;
+
+public class RoleEntity
 {
-    public class RoleEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<UserEntity> Users { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string? Description { get; set; }
+    public List<UserEntity> Users { get; set; }
 }

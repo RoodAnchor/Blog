@@ -1,0 +1,31 @@
+﻿@model List<UserModel>
+
+@{
+    ViewData["Title"] = "Все пользователи";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <a asp-area="" class="link-primary" asp-controller="SignUp" asp-action="Index">Добавить пользователя</a>
+</div>
+
+<div class="user-list">
+    @foreach(var user in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <a class="card-link" asp-action="Edit" asp-controller="User" asp-route-id="@user.Id">@user.SecondName @user.FirstName @user.PatronymicName</a>
+
+                <p>
+                @foreach (var role in user.Roles)
+                {
+                    <span class="badge badge-info">@role.Name</span>
+                }
+                </p>
+
+                <p class="card-text">@user.Email</p>
+            </div>
+        </div>
+    }
+</div>

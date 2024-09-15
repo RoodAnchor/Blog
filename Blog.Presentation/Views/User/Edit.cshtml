@@ -1,0 +1,57 @@
+﻿@model EditUserViewModel
+
+@{
+    ViewData["Title"] = "Редактирование пользователя";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-controller="User" asp-action="Edit">
+    @foreach(var role in Model.Roles)
+    {
+        <div class="form-check-inline">
+            <input class="form-check-input" disabled type="checkbox" value="" id="role-@(role.Id)" @(Model.User.Roles.Any(x => x.Id == role.Id) ? "checked" : "")>
+            <label class="form-check-label" for="role-@(role.Id)">
+                @role.Name
+            </label>
+        </div>
+    }
+
+    <div class="mb-3">
+        <label for="firstName">Имя</label>
+        <input asp-for="User.FirstName" id="firstName" class="form-control" type="text" required />
+        <span asp-validation-for="User.FirstName"></span>
+    </div>
+    <div class="mb-3">
+        <label for="secondName">Фамилия</label>
+        <input asp-for="User.SecondName" id="secondName" class="form-control" type="text" required />
+        <span asp-validation-for="User.SecondName"></span>
+    </div>
+    <div class="mb-3">
+        <label for="patronymicName">Отчество</label>
+        <input asp-for="User.PatronymicName" id="patronymicName" class="form-control" type="text" />
+        <span asp-validation-for="User.PatronymicName"></span>
+    </div>
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <input asp-for="User.Email" id="email" class="form-control" type="text" required />
+        <span asp-validation-for="User.Email"></span>
+    </div>
+    <div class="mb-3">
+        <label for="password">Пароль</label>
+        <input asp-for="User.Password" id="password" class="form-control" type="text" required />
+        <span asp-validation-for="User.Password"></span>
+    </div>
+    <div class="mb-3">
+        <label for="picture">Изображение</label>
+        <input asp-for="User.Picture" id="picture" class="form-control" type="text" />
+        <span asp-validation-for="User.Picture"></span>
+    </div>
+    <div class="mb-3">
+        <label for="about">О себе</label>
+        <textarea asp-for="User.About" id="about" class="form-control"></textarea>
+        <span asp-validation-for="User.About"></span>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Сохранить</button>
+</form>

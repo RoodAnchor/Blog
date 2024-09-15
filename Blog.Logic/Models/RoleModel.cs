@@ -1,8 +1,8 @@
-﻿namespace Blog.Logic.Models
+﻿namespace Blog.Logic.Models;
+
+public class RoleModel
 {
-    public class RoleModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
 }

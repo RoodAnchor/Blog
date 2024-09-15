@@ -1,10 +1,9 @@
 ﻿using Blog.Data.DB;
 using Blog.Data.Entities;
 
-namespace Blog.Data.Repositories
+namespace Blog.Data.Repositories;
+
+public class CommentRepository : BaseRepository<CommentEntity>
 {
-    public class CommentRepository : BaseRepository<CommentEntity>
-    {
-        public CommentRepository(BlogDbContext blogDbContext) : base(blogDbContext) { }
-    }
+    public CommentRepository(BlogDbContext blogDbContext) : base(blogDbContext) { }
 }

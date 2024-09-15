@@ -1,10 +1,9 @@
 ﻿using Blog.Data.DB;
 using Blog.Data.Entities;
 
-namespace Blog.Data.Repositories
+namespace Blog.Data.Repositories;
+
+public class RoleRepository : BaseRepository<RoleEntity>
 {
-    public class RoleRepository : BaseRepository<RoleEntity>
-    {
-        public RoleRepository(BlogDbContext db) : base(db) { }
-    }
+    public RoleRepository(BlogDbContext db) : base(db) { }
 }

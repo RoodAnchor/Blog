@@ -1,0 +1,25 @@
+﻿@model RoleModel
+
+@{
+    ViewData["Title"] = "Добавление роли";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-controller="Role" asp-action="Create">
+    <div class="mb-3">
+        <label form="name">Название</label>
+        <input asp-for="Name" id="name" class="form-control" type="text" required />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <label form="description">Описание</label>
+        <textarea asp-for="Description" id="description" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Добавить</button>
+
+    <div>
+        <a asp-area="" class="link-primary" asp-controller="Role" asp-action="Index">Список всех ролей</a>
+    </div>
+</form>

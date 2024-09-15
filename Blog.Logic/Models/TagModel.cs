@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Blog.Logic.Models;
 
-namespace Blog.Logic.Models
+public class TagModel
 {
-    public class TagModel
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string? Name { get; set; }
 }

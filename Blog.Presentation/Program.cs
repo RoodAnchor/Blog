@@ -29,6 +29,7 @@ namespace Blog.Presentation
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITagService, TagService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

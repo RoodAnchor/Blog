@@ -6,89 +6,87 @@ using Blog.Logic.Models;
 using Blog.Logic.Exceptions;
 using Blog.Logic.Extensions;
 
-namespace Blog.Logic.Services
+namespace Blog.Logic.Services;
+public class UserService : IUserService
 {
-    public class UserService : IUserService
+    private readonly UserRepository _userRepo;
+    private readonly IRepository<RoleEntity> _roleRepo;
+    private readonly IMapper _mapper;
+
+    public UserService(
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
-        private readonly UserRepository _userRepo;
-        private readonly IRepository<RoleEntity> _roleRepo;
-        private readonly IMapper _mapper;
+        _userRepo = unitOfWork.GetRepository<UserEntity>() as UserRepository;
+        _roleRepo = unitOfWork.GetRepository<RoleEntity>(false);
+        _mapper = mapper;
+    }
 
-        public UserService(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
-        {
-            _userRepo = unitOfWork.GetRepository<UserEntity>() as UserRepository;
-            _roleRepo = unitOfWork.GetRepository<RoleEntity>(false);
-            _mapper = mapper;
-        }
+    public async Task<UserModel> RegisterUser(UserModel newUser)
+    {
+        var existingUser = await GetUser(newUser.Email);
+        if (existingUser != null) throw new UserExistException();
 
-        public async Task<UserModel> RegisterUser(UserModel newUser)
-        {
-            var existingUser = await GetUser(newUser.Email);
-            if (existingUser != null) throw new UserExistException();
+        var entity = _mapper.Map<UserEntity>(newUser);
+        var defaultRole = await _roleRepo.Get(3);
 
-            var entity = _mapper.Map<UserEntity>(newUser);
-            var defaultRole = await _roleRepo.Get(3);
+        entity.Roles.Add(defaultRole);
 
-            entity.Roles.Add(defaultRole);
+        await _userRepo.Create(entity);
 
-            await _userRepo.Create(entity);
+        return await GetUser(newUser.Email);
+    }
 
-            return await GetUser(newUser.Email);
-        }
+    public async Task<UserModel> AuthenticateUser(SignInViewModel credentials)
+    {
+        var user = await GetUser(credentials.Email);
 
-        public async Task<UserModel> AuthenticateUser(SignInViewModel credentials)
-        {
-            var user = await GetUser(credentials.Email);
+        if (user == null) return null;
+        if (user.Password != credentials.Password) return null;
 
-            if (user == null) return null;
-            if (user.Password != credentials.Password) return null;
+        return user;
+    }
 
-            return user;
-        }
+    public async Task<UserModel> GetUser(int id)
+    {
+        var entity = await _userRepo.Get(id);
 
-        public async Task<UserModel> GetUser(int id)
-        {
-            var entity = await _userRepo.Get(id);
+        if (entity == null) throw new UserNotFoundException();
 
-            if (entity == null) throw new UserNotFoundException();
+        var user = _mapper.Map<UserModel>(entity);
 
-            var user = _mapper.Map<UserModel>(entity);
+        return user;
+    }
 
-            return user;
-        }
+    public async Task<UserModel> GetUser(string email)
+    {
+        var entity = await _userRepo.Get(email);
+        var user = _mapper.Map<UserModel>(entity);
 
-        public async Task<UserModel> GetUser(string email)
-        {
-            var entity = await _userRepo.Get(email);
-            var user = _mapper.Map<UserModel>(entity);
+        return user;
+    }
 
-            return user;
-        }
+    public async Task<List<UserModel>> GetAllUsers()
+    {
+        var entities = await _userRepo.GetAll();
+        var users = _mapper.Map<List<UserModel>>(entities);
 
-        public List<UserModel> GetAllUsers()
-        {
-            var entities = _userRepo.GetAll();
-            var users = _mapper.Map<List<UserModel>>(entities);
+        return users;
+    }
 
-            return users;
-        }
+    public async Task UpdateUser(UserModel updatedUser)
+    {
+        var entity = await _userRepo.Get(updatedUser.Id);
 
-        public async Task UpdateUser(UserModel updatedUser)
-        {
-            var entity = await _userRepo.Get(updatedUser.Id);
+        entity.MergeChanges(updatedUser);
 
-            entity.MergeChanges(updatedUser);
+        await _userRepo.Update(entity);
+    }
 
-            await _userRepo.Update(entity);
-        }
+    public async Task DeleteUser(UserModel user)
+    {
+        var entity = await _userRepo.Get(user.Id);
 
-        public async Task DeleteUser(UserModel user)
-        {
-            var entity = await _userRepo.Get(user.Id);
-
-            await _userRepo.Delete(entity);
-        }
+        await _userRepo.Delete(entity);
     }
 }
