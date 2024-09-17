@@ -1,0 +1,20 @@
+﻿@model RoleModel
+
+@{
+    ViewData["Title"] = "Детали роли";
+}
+
+<div class="card">
+    <h5 class="card-header">@Model.Name</h5>
+    <div class="card-body">
+        <p class="card-text">@Model.Description</p>
+        <div>
+            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+
+            <form class="form-inline" method="post" asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            </form>
+        </div>
+    </div>
+</div>

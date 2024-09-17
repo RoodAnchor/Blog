@@ -8,10 +8,11 @@ public class UserRepository : BaseRepository<UserEntity>
 {
     public UserRepository(BlogDbContext db) : base(db) { }
 
-    public new async Task<List<UserEntity>> GetAll()
+    public new Task<List<UserEntity>> GetAll()
     {
-        return await Set
+        return Set
             .Include(x => x.Roles)
+            .Include(x => x.Posts)
             .ToListAsync();
     }
 
@@ -19,6 +20,7 @@ public class UserRepository : BaseRepository<UserEntity>
     {
         return await Set
             .Include(x => x.Roles)
+            .Include(x => x.Posts)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -26,6 +28,7 @@ public class UserRepository : BaseRepository<UserEntity>
     {
         return await Set
             .Include(x => x.Roles)
+            .Include(x => x.Posts)
             .FirstOrDefaultAsync(x => x.Email == email);
     }
 }

@@ -1,7 +1,7 @@
-﻿@model CreatePostViewModel
+﻿@model EditPostViewModel
 
 @{
-    ViewData["Title"] = "Добавление статьи";
+    ViewData["Title"] = "Редактирование статьи";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -10,11 +10,11 @@
     <script type="text/javascript" src="~/js/Post.js"></script>
 }
 
-<form method="post" asp-controller="Post" asp-action="Create">
+<form method="post" asp-controller="Posts" asp-action="Edit" asp-route-id="@null">
     @foreach (var tag in Model.Tags)
     {
         <div class="form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="tag-@(tag.Id)" onclick="AddTag(this);">
+            <input class="form-check-input" type="checkbox" value="" id="tag-@(tag.Id)" onclick="AddTag(this);" @(Model.Post.Tags.Any(x => x.Id == tag.Id) ? "checked" : null)>
             <label class="form-check-label" for="tag-@(tag.Id)">
                 @tag.Name
             </label>
@@ -36,11 +36,12 @@
         <textarea asp-for="Post.Content" id="content" class="form-control"></textarea>
     </div>
 
-    <button class="btn btn-primary" type="submit">Добавить</button>
+    <button class="btn btn-primary" type="submit">Сохранить</button>
 
-    <div>
-        <a asp-area="" class="link-primary" asp-controller="Post" asp-action="Index">Список всех статей</a>
-    </div>
-
-    <input type="hidden" asp-for="SelectedTagIds" id="selectedTagIds" />
+    <input type="hidden" asp-for="Post.Id" id="Id" />
+    <input type="hidden" asp-for="SelectedTagIds" id="selectedTagIds" value="@string.Join(',', Model.Post.Tags.Select(x => x.Id).ToArray())" />
 </form>
+
+<div>
+    <a asp-area="" class="link-primary" asp-controller="Posts" asp-action="All">Список всех статей</a>
+</div>

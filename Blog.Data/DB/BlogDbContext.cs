@@ -16,6 +16,7 @@ public class BlogDbContext : DbContext
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<RoleEntity> Roles { get; set; }
     public DbSet<UserRoleEntity> UsersRoles { get; set; }
+    public DbSet<PostTagEntity> PostsTags { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

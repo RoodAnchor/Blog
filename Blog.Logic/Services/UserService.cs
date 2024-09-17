@@ -9,7 +9,7 @@ using Blog.Logic.Extensions;
 namespace Blog.Logic.Services;
 public class UserService : IUserService
 {
-    private readonly UserRepository _userRepo;
+    private readonly UserRepository? _userRepo;
     private readonly IRepository<RoleEntity> _roleRepo;
     private readonly IMapper _mapper;
 
@@ -22,22 +22,23 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<UserModel> RegisterUser(UserModel newUser)
+    public async Task<UserModel?> RegisterUser(UserModel newUser)
     {
-        var existingUser = await GetUser(newUser.Email);
+        var existingUser = await GetUser(newUser.Email!);
         if (existingUser != null) throw new UserExistException();
 
         var entity = _mapper.Map<UserEntity>(newUser);
         var defaultRole = await _roleRepo.Get(3);
 
-        entity.Roles.Add(defaultRole);
+        if (defaultRole != null)
+            entity.Roles.Add(defaultRole);
 
-        await _userRepo.Create(entity);
+        await _userRepo!.Create(entity);
 
-        return await GetUser(newUser.Email);
+        return await GetUser(newUser.Email!);
     }
 
-    public async Task<UserModel> AuthenticateUser(SignInViewModel credentials)
+    public async Task<UserModel?> AuthenticateUser(SignInViewModel credentials)
     {
         var user = await GetUser(credentials.Email);
 
@@ -47,9 +48,9 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<UserModel> GetUser(int id)
+    public async Task<UserModel?> GetUser(int id)
     {
-        var entity = await _userRepo.Get(id);
+        var entity = await _userRepo!.Get(id);
 
         if (entity == null) throw new UserNotFoundException();
 
@@ -58,9 +59,9 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<UserModel> GetUser(string email)
+    public async Task<UserModel?> GetUser(string email)
     {
-        var entity = await _userRepo.Get(email);
+        var entity = await _userRepo!.Get(email);
         var user = _mapper.Map<UserModel>(entity);
 
         return user;
@@ -68,7 +69,7 @@ public class UserService : IUserService
 
     public async Task<List<UserModel>> GetAllUsers()
     {
-        var entities = await _userRepo.GetAll();
+        var entities = await _userRepo!.GetAll();
         var users = _mapper.Map<List<UserModel>>(entities);
 
         return users;
@@ -76,17 +77,30 @@ public class UserService : IUserService
 
     public async Task UpdateUser(UserModel updatedUser)
     {
-        var entity = await _userRepo.Get(updatedUser.Id);
+        var entity = await _userRepo!.Get(updatedUser.Id);
+
+        if (entity == null) return;
 
         entity.MergeChanges(updatedUser);
+
+        entity.Roles.Clear();
+
+        foreach (var role in updatedUser.Roles)
+        {
+            var roleEntity = await _roleRepo.Get(role.Id);
+
+            if(roleEntity != null)
+                entity.Roles.Add(roleEntity);
+        }
 
         await _userRepo.Update(entity);
     }
 
-    public async Task DeleteUser(UserModel user)
+    public async Task DeleteUser(int id)
     {
-        var entity = await _userRepo.Get(user.Id);
+        var entity = await _userRepo!.Get(id);
 
-        await _userRepo.Delete(entity);
+        if (entity != null)
+            await _userRepo.Delete(entity);
     }
 }

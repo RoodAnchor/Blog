@@ -1,29 +1,49 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Blog.Logic.Models;
 using Blog.Logic.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.Presentation.Controllers;
 
 [Route("[controller]")]
-public class RoleController : Controller
+[Authorize(Roles = "Администратор")]
+public class RolesController : Controller
 {
     private readonly IRoleService _roleService;
 
-    public RoleController(IRoleService roleService)
+    public RolesController(IRoleService roleService)
     {
         _roleService = roleService;
     }
 
     [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> Index(int id)
+    {
+        var role = await _roleService.GetRole(id);
+
+        return View(role);
+    }
+
+    [HttpGet]
     [Route("[action]")]
-    public IActionResult Create()
+    public async Task<IActionResult> All()
+    {
+        var roles = _roleService.GetRoles();
+
+        return View(roles);
+    }
+
+    [HttpGet]
+    [Route("[action]")]
+    public IActionResult Add()
     {
         return View(new RoleModel());
     }
 
     [HttpPost]
     [Route("[action]")]
-    public async Task<IActionResult> Create(RoleModel role)
+    public async Task<IActionResult> Add(RoleModel role)
     {
         await _roleService.CreateRole(role);
 
@@ -45,6 +65,6 @@ public class RoleController : Controller
     {
         await _roleService.UpdateRole(role);
 
-        return View(role.Id);
+        return RedirectToAction("Index", new { Id = role.Id });
     }
 }

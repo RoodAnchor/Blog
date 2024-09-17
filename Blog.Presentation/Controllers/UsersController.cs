@@ -1,16 +1,17 @@
 ﻿using Blog.Logic.Models;
 using Blog.Logic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Presentation.Controllers;
 
 [Route("[controller]")]
-public class UserController : Controller
+public class UsersController : Controller
 {
     private readonly IUserService _userService;    
     private readonly IRoleService _roleService;
 
-    public UserController(
+    public UsersController(
         IUserService userService,
         IRoleService roleService)
     {
@@ -18,39 +19,27 @@ public class UserController : Controller
         _roleService = roleService;
     }
 
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> Index(int id)
+    {
+        var user = await _userService.GetUser(id);
+
+        return View(user);
+    }
+
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<IActionResult> All()
     {
         var users = await _userService.GetAllUsers();
 
         return View(users);
     }
 
-    /// <summary>
-    /// Регистрация пользоваталя
-    /// </summary>
-    /// <param name="userModel"></param>
-    /// <returns></returns>
-    [HttpPost]
-    [Route("[action]")]
-    public async Task SignUp(UserModel user)
-    {
-        await _userService.RegisterUser(user);
-    }
-
-    /// <summary>
-    /// Получаем пользователя по ID
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
     [HttpGet]
     [Route("[action]/{id}")]
-    public async Task<UserModel> GetUser(int id)
-    {
-        return await _userService.GetUser(id);
-    }
-
-    [HttpGet]
-    [Route("[action]/{id}")]
+    [Authorize(Policy = "OwnerOnly")]
     public async Task<IActionResult> Edit(int id)
     {
         var vm = new EditUserViewModel();
@@ -68,11 +57,14 @@ public class UserController : Controller
     /// <returns></returns>
     [HttpPost]
     [Route("[action]")]
+    [Authorize]
     public async Task<IActionResult> Edit(EditUserViewModel vm)
     {
+        vm.User.Roles = await GetRoles(vm.SelectedRoleIds);
+
         await _userService.UpdateUser(vm.User);
 
-        return View(vm.User.Id);
+        return RedirectToAction("Index", new { id = vm.User.Id });
     }
 
     /// <summary>
@@ -82,8 +74,26 @@ public class UserController : Controller
     /// <returns></returns>
     [HttpPost]
     [Route("[action]")]
-    public async Task Delete(UserModel user)
+    [Authorize(Roles = "Администратор,Модератор")]
+    public async Task<IActionResult> Delete(UserModel user)
     {
-        await _userService.DeleteUser(user);
+        await _userService.DeleteUser(user.Id);
+
+        return RedirectToAction("All");
+    }
+
+    private async Task<List<RoleModel>> GetRoles(string selectdRoles)
+    {
+        var roles = new List<RoleModel>();
+        var roleIds = selectdRoles.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var roleId in roleIds)
+        {
+            var role = await _roleService.GetRole(int.Parse(roleId));
+
+            if (role != null) roles.Add(role);
+        }
+
+        return roles;
     }
 }

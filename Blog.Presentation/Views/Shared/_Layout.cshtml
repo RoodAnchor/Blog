@@ -19,24 +19,44 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Comment" asp-action="Index">Комментарии</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="All">Статьи</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="Index">Тэги</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="All">Пользователи</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Пользователи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tags" asp-action="All">Тэги</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Роли</a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
+
+                        @if (User.IsInRole("Администратор") || User.IsInRole("Модератор"))
                         {
-                            <li class="nav-item signout-button">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="SignOut" asp-action="Index">Выйти</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Comments" asp-action="All">Комментарии</a>
                             </li>
                         }
+
+                        @if (User.IsInRole("Администратор"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="All">Роли</a>
+                            </li>
+                        }
+                        
+                        <li class="nav-item signout-button">
+                            @if (User.Identity!.IsAuthenticated)
+                            {
+                                <a class="btn btn-outline-info" asp-area="" asp-controller="Users" asp-action="Index" asp-route-id="@User.Claims!.FirstOrDefault(x => x.Type == "Id")?.Value">@User.Identity.Name</a>
+                                <a class="btn btn-outline-secondary" asp-area="" asp-controller="SignOut" asp-action="Index">Выйти</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-success" asp-area="" asp-controller="SignIn" asp-action="Index">Войти</a>
+                            }
+                        </li>
                     </ul>
                 </div>
             </div>

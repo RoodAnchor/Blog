@@ -6,7 +6,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<form method="post" asp-controller="Role" asp-action="Create">
+<form method="post" asp-controller="Roles" asp-action="Add">
     <div class="mb-3">
         <label form="name">Название</label>
         <input asp-for="Name" id="name" class="form-control" type="text" required />
@@ -20,6 +20,6 @@
     <button class="btn btn-primary" type="submit">Добавить</button>
 
     <div>
-        <a asp-area="" class="link-primary" asp-controller="Role" asp-action="Index">Список всех ролей</a>
+        <a asp-area="" class="link-primary" asp-controller="Roles" asp-action="All">Список всех ролей</a>
     </div>
 </form>

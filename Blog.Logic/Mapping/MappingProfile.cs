@@ -11,5 +11,7 @@ public class MappingProfile : Profile
         CreateMap<UserEntity, UserModel>().ReverseMap();
         CreateMap<RoleEntity, RoleModel>().ReverseMap();
         CreateMap<TagEntity, TagModel>().ReverseMap();
+        CreateMap<PostEntity, PostModel>().ReverseMap();
+        CreateMap<CommentEntity, CommentModel>().ReverseMap();
     }
 }

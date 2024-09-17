@@ -12,5 +12,7 @@ public class UserEntity
     public string? Picture { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime RegisterDate { get; set; }
-    public List<RoleEntity> Roles { get; set; }
+    public List<RoleEntity> Roles { get; set; } = [];
+    public List<CommentEntity> Comments { get; set; } = [];
+    public List<PostEntity> Posts { get; set; } = [];
 }

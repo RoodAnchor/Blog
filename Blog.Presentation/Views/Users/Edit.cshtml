@@ -6,16 +6,29 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<form method="post" asp-controller="User" asp-action="Edit">
-    @foreach(var role in Model.Roles)
-    {
-        <div class="form-check-inline">
-            <input class="form-check-input" disabled type="checkbox" value="" id="role-@(role.Id)" @(Model.User.Roles.Any(x => x.Id == role.Id) ? "checked" : "")>
-            <label class="form-check-label" for="role-@(role.Id)">
-                @role.Name
-            </label>
-        </div>
-    }
+@section Scripts {
+    <script type="text/javascript" src="~/js/User.js"></script>
+}
+
+<form method="post" asp-controller="Users" asp-action="Edit" asp-route-id=@null>
+    <p>
+        @foreach(var role in Model.Roles)
+        {
+            if (User.IsInRole("Администратор"))
+            {
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" onclick="AddRole(this);" id="role-@(role.Id)" @(Model.User.Roles.Any(x => x.Id == role.Id) ? "checked" : null)>
+                    <label class="form-check-label" for="role-@(role.Id)">
+                        @role.Name
+                    </label>
+                </div>
+            }
+            else if (Model.User.Roles.Any(x => x.Id == role.Id))
+            {
+                <span class="badge badge-info">@role.Name</span>
+            }
+        }
+    </p>
 
     <div class="mb-3">
         <label for="firstName">Имя</label>
@@ -53,5 +66,9 @@
         <span asp-validation-for="User.About"></span>
     </div>
 
+    <input asp-for="User.Id" id="id" type="hidden" />
+
     <button class="btn btn-primary" type="submit">Сохранить</button>
+
+    <input type="hidden" asp-for="SelectedRoleIds" id="selectedRoleIds" value="@string.Join(',', Model.User.Roles.Select(x => x.Id).ToArray())" />
 </form>

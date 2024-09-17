@@ -4,6 +4,9 @@ using Blog.Data.Extensions;
 using Blog.Data.Repositories;
 using Blog.Logic.Mapping;
 using Blog.Logic.Services;
+using Blog.Presentation.Authorization.Handlers;
+using Blog.Presentation.Authorization.Requirements;
+using Microsoft.AspNetCore.Authorization;
 using System.Reflection;
 
 namespace Blog.Presentation
@@ -23,13 +26,17 @@ namespace Blog.Presentation
             builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
             builder.Services.AddDbContext<BlogDbContext>()
                 .AddUnitOfWork()
-                .AddCustomRepository<UserEntity, UserRepository>();
+                .AddCustomRepository<UserEntity, UserRepository>()
+                .AddCustomRepository<TagEntity, TagRepository>()
+                .AddCustomRepository<PostEntity, PostRepository>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
+
+            builder.Services.AddScoped<IAuthorizationHandler, OwnerOnlyHandler>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -46,18 +53,32 @@ namespace Blog.Presentation
                         }
                     };
 
-                    options.AccessDeniedPath = "/SignIn";
+                    options.AccessDeniedPath = "/Errors/AccessDenied";
                 });
+
+            builder.Services.AddAuthorization(options => 
+            {
+                options.AddPolicy("OwnerOnly", policy => policy.AddRequirements(new OwnerOnlyRequirement(true)));
+            });
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Errors");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePages(async context => 
+            {
+                if (context.HttpContext.Response.StatusCode == 404)
+                    context.HttpContext.Response.Redirect("/Errors/ResourceNotFound");
+
+                if (context.HttpContext.Response.StatusCode == 401)
+                    context.HttpContext.Response.Redirect("/Errors/AccessDenied");
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

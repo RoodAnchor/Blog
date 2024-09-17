@@ -20,7 +20,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
         Set = set;
     }
 
-    public IEnumerable<T> GetAll()
+    public virtual IEnumerable<T> GetAll()
     {
         return Set;
     }
@@ -31,7 +31,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<T?> Get(int id)
+    public virtual async Task<T?> Get(int id)
     {
         return await Set.FindAsync(id);
     }

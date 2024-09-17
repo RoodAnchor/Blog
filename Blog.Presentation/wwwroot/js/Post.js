@@ -1,6 +1,6 @@
-﻿let tagIds = [];
+﻿let tagIds = document.getElementById('selectedTagIds').value.split(',');
 function AddTag(checkbox) {
-    let tagId = parseInt(checkbox.id.replace("tag-", ""));
+    let tagId = checkbox.id.replace("tag-", "");
 
     if (checkbox.checked)
         tagIds.push(tagId);

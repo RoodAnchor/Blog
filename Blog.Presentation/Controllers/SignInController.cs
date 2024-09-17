@@ -28,29 +28,40 @@ public class SignInController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(SignInViewModel creds)
     {
-        var user = await _userService.AuthenticateUser(creds);
+        if (ModelState.IsValid)
+        {
+            var user = await _userService.AuthenticateUser(creds);
 
-        if (user == null)
-            throw new AuthenticationException("Неверные имя пользователя или пароль");
-
-        var claims = new List<Claim>()
+            if (user != null)
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email)
-            };
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email!),
+                    new Claim("Id", user.Id.ToString())
+                };
 
-        foreach (var role in user.Roles)
-            claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Name));
+                foreach (var role in user.Roles)
+                    claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Name));
 
-        var claimsIdentity = new ClaimsIdentity(
-            claims,
-            "AppCookie",
-            ClaimsIdentity.DefaultNameClaimType,
-            ClaimsIdentity.DefaultRoleClaimType);
+                var claimsIdentity = new ClaimsIdentity(
+                    claims,
+                    "AppCookie",
+                    ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
 
-        await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(claimsIdentity));
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity));
 
-        return View();
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Неправильные логин и (или) пароль");
+                return View(creds);
+            }
+        }
+
+        return RedirectToAction("Index");
     }
 }

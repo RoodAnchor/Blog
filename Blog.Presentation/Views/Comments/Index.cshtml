@@ -1,0 +1,39 @@
+﻿@model CommentModel
+
+@{
+    ViewData["Title"] = "Комментарий";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Содержание</h5>
+        <p class="card-text">@Model.Content</p>
+
+        <h6 class="card-subtitle mb-2 text-muted">Автор</h6>
+        <p class="card-text">
+            <a asp-action="Index" asp-controller="Users" asp-route-id="@Model.UserId">@Model.User!.Email</a>
+        </p>
+
+        <h6 class="card-subtitle mb-2 text-muted">Дата публикации</h6>
+        <p class="card-text">
+            @Model.DateCreated
+        </p>
+
+        <h6 class="card-subtitle mb-2 text-muted">Статья</h6>
+        <p class="card-text">
+            <a asp-action="Index" asp-controller="Posts" asp-route-id="@Model.PostId">@Model.Post!.Title</a>
+        </p>
+
+        <div>
+            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+            <form class="form-inline" method="post" asp-action="Delete" asp-controller="Comments">
+                <input asp-for="Id" type="hidden"/>
+                <button class="btn btn-outline-danger" type="submit">Удалить</button>
+            </form>
+        </div>
+
+        <a asp-action="All" class="card-link">Все комментарии</a>
+    </div>
+</div>

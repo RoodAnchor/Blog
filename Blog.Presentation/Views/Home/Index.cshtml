@@ -1,1 +1,42 @@
-﻿Wee home
+﻿<h1>Добро пожаловать!</h1>
+
+<div class="row">
+    <div class="col-sm-4 mb-3">
+        <div class="card">
+            <div class="card-header">
+                Авторы
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Посмотрите авторов</h5>
+                <p class="card-text">Посмотрите кто зарегестировался и уже публикует статьи!</p>
+                <a asp-action="All" asp-controller="Users" class="btn btn-primary">Посмотерть всех авторов</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 mb-3">
+        <div class="card">
+            <div class="card-header">
+                Статьи
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Посмотрите, что пишут другие</h5>
+                <p class="card-text">Читайте статьи других авторов. Найдите то, что вам интересно.</p>
+                <a asp-action="All" asp-controller="Posts" class="btn btn-primary">Посмотерть все статьи</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 mb-3">
+        <div class="card">
+            <div class="card-header">
+                Авторизация
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Присоединяйтесь</h5>
+                <p class="card-text">Станьте автором и публикуйте свои статьи в вашем блоге!</p>
+                <a asp-action="Index" asp-controller="SignUp" class="btn btn-primary">Зарегестироваться</a>
+            </div>
+        </div>
+    </div>
+</div>

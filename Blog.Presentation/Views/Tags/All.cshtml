@@ -1,0 +1,33 @@
+﻿@model List<TagModel>
+
+@{
+    ViewData["Title"] = "Все тэги";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User.Identity!.IsAuthenticated)
+{
+    <div class=" mb-3">
+        <a asp-area="" class="link-primary" asp-controller="Tags" asp-action="Add">Добавить тэг</a>
+    </div>
+}
+
+<div class="tag-list">
+    @foreach (var tag in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <a class="card-link" asp-action="Index" asp-controller="Tags" asp-route-id="@tag.Id">@tag.Name</a>
+
+                <div class="text-end text-muted">
+                    Статей по тэгу: @tag.Posts.Count
+                </div>
+                @if (tag.Posts.Count > 0)
+                {
+                    <a asp-action="Tag" asp-controller="Posts" asp-route-id="@tag.Id" class="btn btn-primary">Все статьи по тэгу</a>
+                }
+            </div>
+        </div>
+    }
+</div>

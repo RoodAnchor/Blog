@@ -33,3 +33,21 @@ body {
     color: #fff;
     background-color: #17a2b8;
 }
+
+.badge-success {
+    color: #fff;
+    background-color: #28a745;
+}
+
+.form-inline {
+    display: inline;
+}
+
+.validation-summary-errors {
+    color: red;
+}
+
+.validation-summary-errors > ul {
+    list-style-type: none;
+    padding-left: 0;
+}

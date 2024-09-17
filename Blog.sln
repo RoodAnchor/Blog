@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Presentation", "Blog.Presentation\Blog.Presentation.csproj", "{9A2F13DE-A28A-4484-9A7F-60334FC9E67C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Presentation", "Blog.Presentation\Blog.Presentation.csproj", "{9A2F13DE-A28A-4484-9A7F-60334FC9E67C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data", "Blog.Data\Blog.Data.csproj", "{1073AD94-B756-488D-B967-91887BA928DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Data", "Blog.Data\Blog.Data.csproj", "{1073AD94-B756-488D-B967-91887BA928DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Logic", "Blog.Logic\Blog.Logic.csproj", "{A6AAA8A3-F43E-43E0-A1B8-84A73F886AD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Logic", "Blog.Logic\Blog.Logic.csproj", "{A6AAA8A3-F43E-43E0-A1B8-84A73F886AD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

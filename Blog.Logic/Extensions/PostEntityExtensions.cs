@@ -10,5 +10,6 @@ public static class PostEntityExtensions
         entity.Title = newData.Title;
         entity.Description = newData.Description;
         entity.Content = newData.Content;
+        entity.Views = newData.Views;
     }
 }

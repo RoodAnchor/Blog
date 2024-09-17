@@ -1,0 +1,19 @@
+﻿@model CommentModel
+
+@{
+    ViewData["Title"] = "Редактирование комментария";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-action="Edit" asp-route-id=@null>
+    <div class="mb-3">
+        <label for="content">Содержание</label>
+        <input asp-for="Content" id="content" class="form-control" type="text" required />
+        <span asp-validation-for="Content"></span>
+    </div>
+
+    <input asp-for="Id" type="hidden" />
+
+    <button class="btn btn-primary" type="submit">Сохранить</button>
+</form>

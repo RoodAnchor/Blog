@@ -8,6 +8,8 @@ public class PostEntity
     public string? Title { get; set; }
     public string? Description { get; set; }
     public string? Content { get; set; }
-    public DateTime DateCreated { get; set; }
-    public List<TagEntity> Tags { get; set; }
+    public DateTime DateCreated { get; set; } = DateTime.Now;
+    public List<TagEntity> Tags { get; set; } = [];
+    public List<CommentEntity> Comments { get; set; } = [];
+    public int Views { get; set; }
 }

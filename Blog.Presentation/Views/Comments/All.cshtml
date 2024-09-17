@@ -1,0 +1,32 @@
+﻿@model List<CommentModel>
+
+@{
+    ViewData["Title"] = "Все комментарии";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="comment-list">
+    @foreach (var comment in Model)
+    {
+        var shortTitle = comment.Content!.Length > 30 ? $"{comment.Content.Substring(0, 30)}..." : comment.Content;
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>
+                    <a class="card-link" asp-action="Index" asp-controller="Comments" asp-route-id="@comment.Id">@shortTitle</a>
+                </p>
+
+                <div>
+                    Статья: <a class="card-link" asp-action="Index" asp-controller="Posts" asp-route-id="@comment.PostId">@comment.Post!.Title</a>
+                </div>
+                <div>
+                    Пользователь: <a class="card-link" asp-action="Index" asp-controller="Users" asp-route-id="@comment.UserId">@comment.User!.Email</a>
+                </div>
+                <div>
+                    @comment.DateCreated.ToShortDateString()
+                </div>
+            </div>
+        </div>
+    }
+</div>

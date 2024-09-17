@@ -1,0 +1,23 @@
+﻿@model List<RoleModel>
+
+@{
+    ViewData["Title"] = "Все роли";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class=" mb-3">
+    <a asp-area="" class="link-primary" asp-controller="Roles" asp-action="Add">Добавить роль</a>
+</div>
+
+<div class="tag-list">
+    @foreach (var role in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <a class="card-link" asp-action="Index" asp-controller="Roles" asp-route-id="@role.Id">@role.Name</a>
+                <div class="text-muted">@role.Description</div>
+            </div>
+        </div>
+    }
+</div>

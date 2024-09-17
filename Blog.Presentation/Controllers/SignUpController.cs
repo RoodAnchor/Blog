@@ -25,6 +25,6 @@ public class SignUpController : Controller
     {
         var user = await _userService.RegisterUser(newUser);
 
-        return View();
+        return RedirectToAction("All", "Posts");
     }
 }

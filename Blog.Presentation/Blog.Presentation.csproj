@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\User.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\User.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\User.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blog.Logic\Blog.Logic.csproj">
       <Private>True</Private>
     </ProjectReference>

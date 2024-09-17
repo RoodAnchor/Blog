@@ -1,0 +1,63 @@
+﻿@model PostViewModel
+
+@{
+    ViewData["Title"] = Model.Post!.Title;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    @foreach (var tag in Model.Post.Tags)
+    {
+        <span class="badge badge-info">@tag.Name</span>
+    }
+</p>
+
+<p>
+    @Model.Post.Content
+</p>
+
+<p class="text-end text-muted">
+    @Model.Post.User!.Email
+</p>
+
+<div class="comments">
+    @if (Model.Post.Comments.Count > 0)
+    {
+        <h3>Комментарии к статье</h3>
+    }
+
+    @foreach (var comment in Model.Post.Comments)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>@comment.Content</p>
+                <span class="float-end badge badge-success">@comment.User!.Email</span>
+            </div>
+        </div>
+    }
+</div>
+
+<form method="post" asp-action="Add" asp-controller="Comments">
+    <div class="mb-3">
+        <textarea asp-for="Comment!.Content" id="content" class="form-control"></textarea>
+    </div>
+
+    <input type="hidden" asp-for="Post!.Id" />
+
+    <button class="btn btn-primary" type="submit">Оставить комментарий</button>
+</form>
+
+<div class="d-flex justify-content-end">
+
+    @if (User.IsInRole("Администратор") || User.IsInRole("Модератор") || User.Identity!.Name == Model.Post.User.Email)
+    {
+        <a class="btn btn-outline-secondary me-1" asp-action="Edit" asp-route-id="@Model.Post.Id">Редактировать</a>
+
+        <form class="form-inline" method="post" asp-action="Delete">
+            <input type="hidden" asp-for="Post!.Id" />
+
+            <button class="btn btn-outline-danger">Удалить</button>
+        </form>
+    }
+</div>

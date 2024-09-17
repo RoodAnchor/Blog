@@ -1,0 +1,29 @@
+﻿@model TagModel
+
+@{
+    ViewData["Title"] = "О тэге";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <h5 class="card-header">@Model.Name</h5>
+    <div class="card-body">
+        <h class="card-title">Количество статей по тэгу</h
+            5>
+        <p class="card-text">@Model.Posts.Count</p>        
+
+        @if(User.IsInRole("Администратор") || User.IsInRole("Модератор"))
+        {
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-outline-secondary me-1" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+
+                <form class="form-inline" method="post" asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+
+                    <button class="btn btn-outline-danger">Удалить</button>
+                </form>
+            </div>   
+        }
+    </div>
+</div>
