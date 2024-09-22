@@ -18,15 +18,6 @@ public class BlogDbContext : DbContext
     public DbSet<UserRoleEntity> UsersRoles { get; set; }
     public DbSet<PostTagEntity> PostsTags { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        string dbPath = Path.Combine(AppContext.BaseDirectory, "DB", "blog.db");
-
-        optionsBuilder.UseSqlite($"Data Source={dbPath}");
-
-        base.OnConfiguring(optionsBuilder);
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>()
