@@ -62,6 +62,6 @@ public class SignInController : Controller
             }
         }
 
-        return RedirectToAction("Index");
+        return View(creds);
     }
 }

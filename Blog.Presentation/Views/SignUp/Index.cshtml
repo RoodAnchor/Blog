@@ -9,12 +9,12 @@
 <form method="post" asp-controller="SignUp" asp-action="Index">
     <div class="mb-3">
         <label form="secondName">Фамилия</label>
-        <input asp-for="SecondName" id="secondName" class="form-control" type="text" required />
+        <input asp-for="SecondName" id="secondName" class="form-control" type="text" required minlength="2" />
         <span asp-validation-for="SecondName"></span>
     </div>
     <div class="mb-3">
         <label form="firstName">Имя</label>
-        <input asp-for="FirstName" id="firstName" class="form-control" type="text" required />
+        <input asp-for="FirstName" id="firstName" class="form-control" type="text" required minlength="2" />
         <span asp-validation-for="FirstName"></span>
     </div>
     <div class="mb-3">
@@ -28,7 +28,7 @@
     </div>
     <div class="mb-3">
         <label form="password">Пароль</label>
-        <input asp-for="Password" type="password" id="password" class="form-control" required />
+        <input asp-for="Password" type="password" id="password" class="form-control" required minlength="5" />
         <span asp-validation-for="Password"></span>
     </div>
     <div class="mb-3">

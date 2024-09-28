@@ -45,9 +45,12 @@ public class RolesController : Controller
     [Route("[action]")]
     public async Task<IActionResult> Add(RoleModel role)
     {
+        if (!ModelState.IsValid)
+            return View(role);
+
         await _roleService.CreateRole(role);
 
-        return View(role);
+        return RedirectToAction("All");
     }
 
     [HttpGet]
@@ -63,8 +66,22 @@ public class RolesController : Controller
     [Route("[action]")]
     public async Task<IActionResult> Edit(RoleModel role)
     {
+        if(!ModelState.IsValid)
+            return View(role);
+
         await _roleService.UpdateRole(role);
 
         return RedirectToAction("Index", new { Id = role.Id });
+    }
+
+    [HttpPost]
+    [Route("[action]")]
+    public async Task<IActionResult> Delete(RoleModel role)
+    {
+        var _role = await _roleService.GetRole(role.Id);
+
+        await _roleService.DeleteRole(role);
+
+        return RedirectToAction("All");
     }
 }

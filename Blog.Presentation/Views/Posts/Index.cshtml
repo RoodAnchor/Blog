@@ -40,7 +40,8 @@
 
 <form method="post" asp-action="Add" asp-controller="Comments">
     <div class="mb-3">
-        <textarea asp-for="Comment!.Content" id="content" class="form-control"></textarea>
+        <textarea asp-for="Comment!.Content" id="content" class="form-control" required minlength="2" maxlength="2000"></textarea>
+        <span asp-validation-for="Comment!.Content">@Html.Raw(TempData["CommentValidationErrorMessage"])</span>
     </div>
 
     <input type="hidden" asp-for="Post!.Id" />

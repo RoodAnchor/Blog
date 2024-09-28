@@ -9,12 +9,12 @@
 <form method="post" asp-controller="Roles" asp-action="Edit" asp-route-id=@null>
     <div class="mb-3">
         <label form="name">Название</label>
-        <input asp-for="Name" id="name" class="form-control" type="text" required />
+        <input asp-for="Name" id="name" class="form-control" type="text" required minlength="2" maxlength="50" required />
         <span asp-validation-for="Name"></span>
     </div>
     <div class="mb-3">
         <label form="description">Описание</label>
-        <textarea asp-for="Description" id="description" class="form-control"></textarea>
+        <textarea asp-for="Description" id="description" class="form-control" minlength="2" maxlength="100" required></textarea>
     </div>
 
     <button class="btn btn-primary" type="submit">Сохранить</button>

@@ -43,11 +43,19 @@ body {
     display: inline;
 }
 
-.validation-summary-errors {
+.validation-summary-errors,
+.field-validation-valid,
+.field-validation-error {
     color: red;
 }
 
 .validation-summary-errors > ul {
     list-style-type: none;
     padding-left: 0;
+}
+
+.hidden-input {
+    opacity: 0;
+    height: 0;
+    pointer-events: none;
 }

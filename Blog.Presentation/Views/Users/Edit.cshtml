@@ -11,13 +11,16 @@
 }
 
 <form method="post" asp-controller="Users" asp-action="Edit" asp-route-id=@null>
-    <p>
+    <div class="roles">
         @foreach(var role in Model.Roles)
         {
             if (User.IsInRole("Администратор"))
             {
                 <div class="form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" onclick="AddRole(this);" id="role-@(role.Id)" @(Model.User.Roles.Any(x => x.Id == role.Id) ? "checked" : null)>
+                    <input class="form-check-input" type="checkbox" value="" 
+                        onclick="AddRole(this);selectedRoleIds.setCustomValidity('');" 
+                        id="role-@(role.Id)" 
+                        @(Model.User.Roles.Any(x => x.Id == role.Id) ? "checked" : null)>
                     <label class="form-check-label" for="role-@(role.Id)">
                         @role.Name
                     </label>
@@ -28,16 +31,23 @@
                 <span class="badge badge-info">@role.Name</span>
             }
         }
-    </p>
+
+        <div>
+            <input class="hidden-input" asp-for="SelectedRoleIds" id="selectedRoleIds" 
+                required 
+                oninvalid="setCustomValidity('Выберите минимум одну роль')" 
+                value="@string.Join(',', Model.User.Roles.Select(x => x.Id).ToArray())" />
+        </div>
+    </div>
 
     <div class="mb-3">
         <label for="firstName">Имя</label>
-        <input asp-for="User.FirstName" id="firstName" class="form-control" type="text" required />
+        <input asp-for="User.FirstName" id="firstName" class="form-control" type="text" required minlength="2" />
         <span asp-validation-for="User.FirstName"></span>
     </div>
     <div class="mb-3">
         <label for="secondName">Фамилия</label>
-        <input asp-for="User.SecondName" id="secondName" class="form-control" type="text" required />
+        <input asp-for="User.SecondName" id="secondName" class="form-control" type="text" required minlength="2" />
         <span asp-validation-for="User.SecondName"></span>
     </div>
     <div class="mb-3">
@@ -52,7 +62,7 @@
     </div>
     <div class="mb-3">
         <label for="password">Пароль</label>
-        <input asp-for="User.Password" id="password" class="form-control" type="text" required />
+        <input asp-for="User.Password" id="password" class="form-control" type="text" required minlength="5" />
         <span asp-validation-for="User.Password"></span>
     </div>
     <div class="mb-3">
@@ -69,6 +79,4 @@
     <input asp-for="User.Id" id="id" type="hidden" />
 
     <button class="btn btn-primary" type="submit">Сохранить</button>
-
-    <input type="hidden" asp-for="SelectedRoleIds" id="selectedRoleIds" value="@string.Join(',', Model.User.Roles.Select(x => x.Id).ToArray())" />
 </form>

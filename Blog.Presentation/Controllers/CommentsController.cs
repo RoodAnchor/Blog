@@ -19,6 +19,11 @@ public class CommentsController : Controller
         _userService = userService;
     }
 
+    public async Task<IActionResult> Index()
+    {
+        return RedirectToAction("All");
+    }
+
     [HttpGet]
     [Route("{id}")]
     [Authorize(Roles = "Администратор,Модератор")]
@@ -55,6 +60,14 @@ public class CommentsController : Controller
         comment.UserId = user.Id;
         comment.PostId = vm.Post.Id;
 
+        if (!ModelState.IsValid)
+        {
+            var message = ModelState["Comment.Content"]?.Errors[0].ErrorMessage.ToString();
+            TempData["CommentValidationErrorMessage"] = message;
+
+            return RedirectToAction("Index", "Posts", new { Id = vm.Post.Id });
+        }
+
         await _commentService.CreateComment(comment);
 
         return RedirectToAction("Index", "Posts", new { id = comment.PostId });
@@ -78,9 +91,14 @@ public class CommentsController : Controller
     [HttpPost]
     [Route("[action]")]
     [Authorize(Roles = "Администратор,Модератор")]
-    public async Task Edit(CommentModel comment)
+    public async Task<IActionResult> Edit(CommentModel comment)
     {
+        if (!ModelState.IsValid)
+            return View(comment);
+
         await _commentService.UpdateComment(comment);
+
+        return RedirectToAction("Index", new { Id = comment.Id });
     }
 
     /// <summary>

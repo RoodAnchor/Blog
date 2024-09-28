@@ -26,7 +26,7 @@
                 <p class="card-text">@Model.Posts.Count</p>
 
                 <h5 class="card-title">День рождения</h5>
-                <p class="card-text">@Model.BirthDate.ToShortDateString()</p>
+                <p class="card-text">@Model.BirthDate?.ToShortDateString()</p>
 
                 <h5 class="card-title">Зарегестрирован на сайте</h5>
                 <p class="card-text">@Model.RegisterDate.ToShortDateString()</p>

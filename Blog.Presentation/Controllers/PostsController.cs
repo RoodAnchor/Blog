@@ -49,6 +49,11 @@ public class PostsController : Controller
         return View("All", posts);
     }
 
+    public async Task<IActionResult> Index()
+    {
+        return RedirectToAction("All");
+    }
+
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Index(int id)
@@ -86,6 +91,10 @@ public class PostsController : Controller
     {
         vm.Post.Tags = await GetTags(vm.SelectedTagIds);
         vm.Post.User = await _userService.GetUser(User.Identity?.Name!);
+        vm.Tags = await _tagService.GetTags();
+
+        if (!ModelState.IsValid)
+            return View(vm);
 
         await _postService.CreatePost(vm.Post);
 
@@ -117,6 +126,9 @@ public class PostsController : Controller
     {
         vm.Post.Tags = await GetTags(vm.SelectedTagIds);
 
+        if (!ModelState.IsValid)
+            return View(vm);
+
         await _postService.UpdatePost(vm.Post);
 
         return RedirectToAction("Index", new { Id = vm.Post.Id });
@@ -141,6 +153,8 @@ public class PostsController : Controller
 
     private async Task<List<TagModel>> GetTags(string selectdTags)
     {
+        if (string.IsNullOrEmpty(selectdTags)) return new List<TagModel>();
+
         var tags = new List<TagModel>();
         var tagIds = selectdTags.Split(',', StringSplitOptions.RemoveEmptyEntries);
 

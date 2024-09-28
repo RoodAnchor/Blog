@@ -9,7 +9,7 @@
 <form method="post" asp-controller="Tags" asp-action="Add">
     <div class="mb-3">
         <label for="name">Название</label>
-        <input asp-for="Name" type="text" id="name" class="form-control" required />
+        <input asp-for="Name" type="text" id="name" class="form-control" required minlength="2" />
         <span asp-validation-for="Name"></span>
     </div>
     <button class="btn btn-primary" type="submit">Сохранить</button>

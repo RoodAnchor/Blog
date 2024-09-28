@@ -11,29 +11,36 @@
 }
 
 <form method="post" asp-controller="Posts" asp-action="Add">
-    @foreach (var tag in Model.Tags)
-    {
-        <div class="form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="tag-@(tag.Id)" onclick="AddTag(this);">
-            <label class="form-check-label" for="tag-@(tag.Id)">
-                @tag.Name
-            </label>
+    <div class="tags">
+        @foreach (var tag in Model.Tags)
+        {
+            <div class="form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="tag-@(tag.Id)" onclick="AddTag(this);selectedTagIds.setCustomValidity('');">
+                <label class="form-check-label" for="tag-@(tag.Id)">
+                    @tag.Name
+                </label>
+            </div>
+        }
+
+        <div>
+            <span asp-validation-for="SelectedTagIds"></span>
+            <input class="hidden-input" asp-for="SelectedTagIds" id="selectedTagIds" required oninvalid="setCustomValidity('Выберите минимум один тэг')" />
         </div>
-    }
+    </div>
 
     <div class="mb-3">
         <label for="title">Заголовок</label>
-        <input asp-for="Post.Title" id="title" class="form-control" type="text" required />
+        <input asp-for="Post.Title" id="title" class="form-control" type="text" required minlength="10" maxlength="50" />
         <span asp-validation-for="Post.Title"></span>
     </div>
     <div class="mb-3">
         <label for="description">Краткое описание</label>
-        <input asp-for="Post.Description" id="description" class="form-control" type="text" required />
+        <input asp-for="Post.Description" id="description" class="form-control" type="text" required minlength="10" maxlength="100" />
         <span asp-validation-for="Post.Title"></span>
     </div>
     <div class="mb-3">
         <label for="content">Контент</label>
-        <textarea asp-for="Post.Content" id="content" class="form-control"></textarea>
+        <textarea asp-for="Post.Content" id="content" class="form-control" required minlength="10"></textarea>
     </div>
 
     <button class="btn btn-primary" type="submit">Добавить</button>
@@ -41,6 +48,4 @@
     <div>
         <a asp-area="" class="link-primary" asp-controller="Posts" asp-action="All">Список всех статей</a>
     </div>
-
-    <input type="hidden" asp-for="SelectedTagIds" id="selectedTagIds" />
 </form>

@@ -49,9 +49,14 @@ public class TagsController : Controller
     [HttpPost]
     [Route("[action]")]
     [Authorize]
-    public async Task Add(TagModel tag)
+    public async Task<IActionResult> Add(TagModel tag)
     {
+        if (!ModelState.IsValid)
+            return View(tag);
+
         await _tagService.CreateTag(tag);
+
+        return RedirectToAction("All");
     }
 
     [HttpGet]
@@ -74,6 +79,9 @@ public class TagsController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> Edit(TagModel tag)
     {
+        if (!ModelState.IsValid)
+            return View(tag);
+
         await _tagService.UpdateTag(tag);
 
         return RedirectToAction("Index", new { Id = tag.Id });

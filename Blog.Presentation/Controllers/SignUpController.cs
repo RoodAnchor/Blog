@@ -23,6 +23,9 @@ public class SignUpController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(UserModel newUser)
     {
+        if(!ModelState.IsValid)
+            return View(newUser);
+
         var user = await _userService.RegisterUser(newUser);
 
         return RedirectToAction("All", "Posts");

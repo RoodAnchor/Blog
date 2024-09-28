@@ -9,7 +9,7 @@
 <form method="post" asp-action="Edit" asp-route-id=@null>
     <div class="mb-3">
         <label for="content">Содержание</label>
-        <input asp-for="Content" id="content" class="form-control" type="text" required />
+        <textarea asp-for="Content" id="content" class="form-control" type="text" minlength="2" maxlength="2000" required></textarea>
         <span asp-validation-for="Content"></span>
     </div>
 
