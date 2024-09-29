@@ -15,10 +15,6 @@ namespace Blog.Presentation.Controllers
 
         public IActionResult Index()
         {
-            //var exceptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-
-            //_logger.LogError($"Message: {exceptionFeature.Error.Message}, Path: {exceptionFeature.Path}");
-
             return View();
         }
 
