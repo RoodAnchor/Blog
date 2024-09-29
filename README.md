@@ -1,2 +1,4 @@
 # Blog
- Repo for internship task
+
+## Логирование NLog
+NLog пишет в БД, так что результаты можно посмотреть на странице /Logs
