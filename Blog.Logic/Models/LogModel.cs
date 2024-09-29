@@ -5,7 +5,7 @@ public class LogModel
 {
     public int Id { get; set; }
     public string Level { get; set; }
-    public DateTime Date { get; set; } = DateTime.Now;
+    public DateTime Date { get; set; } = DateTime.UtcNow;
     public string UserEmail { get; set; }
     public UserModel? User { get; set; }
     public string? ClientIP { get; set; }

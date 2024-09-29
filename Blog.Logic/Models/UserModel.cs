@@ -34,7 +34,7 @@ public class UserModel
 
     [Required(ErrorMessage = "Заполните это поле")]
     public DateTime? BirthDate { get; set; }
-    public DateTime RegisterDate { get; set; } = DateTime.Now;
+    public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
     public List<RoleModel> Roles { get; set; } = [];
     public List<CommentModel> Comments { get; set; } = [];
     public List<PostModel> Posts { get; set; } = [];

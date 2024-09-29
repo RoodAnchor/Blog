@@ -21,7 +21,7 @@ public class PostModel
     [Required(ErrorMessage = "Заполните это поле")]
     [MinLength(10, ErrorMessage = "Длина контента должна быть минимум 10 символа")]
     public string? Content { get; set; }
-    public DateTime DateCreated { get; set; } = DateTime.Now;
+    public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     public List<TagModel> Tags { get; set; } = [];
     public List<CommentModel> Comments { get; set; } = [];
     public int Views { get; set; }

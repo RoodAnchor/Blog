@@ -14,5 +14,5 @@ public class CommentModel
     [MinLength(2, ErrorMessage = "Длина сообщения должна быть минимум 2 символа")]
     [MaxLength(2000, ErrorMessage = "Длина сообщения не должна привышать 2000 символов")]
     public string? Content { get; set; }
-    public DateTime DateCreated { get; set; } = DateTime.Now;
+    public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 }

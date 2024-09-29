@@ -8,5 +8,5 @@ public class CommentEntity
     public int PostId { get; set; }
     public PostEntity? Post { get; set; }
     public string? Content { get; set; }
-    public DateTime DateCreated { get; set; } = DateTime.Now;
+    public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 }
