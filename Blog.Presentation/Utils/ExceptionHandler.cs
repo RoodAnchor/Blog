@@ -1,17 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Diagnostics;
 
 namespace Blog.Presentation.Utils;
 
-public class ExceptionHandler : ActionFilterAttribute, IExceptionFilter
+public class ExceptionHandler : IExceptionHandler
 {
-    public void OnException(ExceptionContext context) 
+    private readonly ILogger<ExceptionHandler> _logger;
+
+    public ExceptionHandler(ILogger<ExceptionHandler> logger) => 
+        _logger = logger;
+
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext, 
+        Exception exception, 
+        CancellationToken cancellationToken)
     {
-        var logger = context.HttpContext.RequestServices.GetService(typeof(ILogger)) as ILogger;
+        _logger.LogError($"Log Entry: {exception.Message}");
 
-        if (logger != null)
-            logger.LogError($"Log Entry: {context.Exception.Message}");
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        httpContext.Response.Redirect("/Errors");
 
-        context.Result = new RedirectToActionResult("Index", "Errors", null);
+        return true;
     }
 }

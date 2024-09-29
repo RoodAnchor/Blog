@@ -2,11 +2,9 @@
 using Blog.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Blog.Presentation.Utils;
 
 namespace Blog.Presentation.Controllers;
 
-[ExceptionHandler]
 [Route("[controller]")]
 public class CommentsController : Controller
 {

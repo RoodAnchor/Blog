@@ -2,11 +2,9 @@
 using Blog.Logic.Models;
 using Blog.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
-using Blog.Presentation.Utils;
 
 namespace Blog.Presentation.Controllers;
 
-[ExceptionHandler]
 [Route("[controller]")]
 [Authorize(Roles = "Администратор")]
 public class RolesController : Controller

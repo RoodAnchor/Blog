@@ -1,12 +1,10 @@
 ﻿using Blog.Logic.Models;
 using Blog.Logic.Services;
-using Blog.Presentation.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Presentation.Controllers;
 
-[ExceptionHandler]
 [Authorize(Roles = "Администратор")]
 public class LogsController : Controller
 {
