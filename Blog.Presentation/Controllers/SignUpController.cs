@@ -1,9 +1,11 @@
 ﻿using Blog.Logic.Models;
 using Blog.Logic.Services;
+using Blog.Presentation.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Presentation.Controllers;
 
+[ExceptionHandler]
 [Route("[controller]")]
 public class SignUpController : Controller
 {

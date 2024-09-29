@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Blog.Presentation.Utils;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Presentation.Controllers;
 
+[ExceptionHandler]
 public class SignOutController : Controller
 {
     private readonly ILogger<SignOutController> _logger;

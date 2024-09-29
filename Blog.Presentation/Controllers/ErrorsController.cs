@@ -35,7 +35,7 @@ namespace Blog.Presentation.Controllers
         [Route("[action]")]
         public IActionResult ResourceNotFound()
         {
-            _logger.LogWarning($"Message: Resource not found, Path: {HttpContext.Request.Query["RequestUrl"]}");
+            _logger.LogError($"Message: Resource not found, Path: {HttpContext.Request.Query["RequestUrl"]}");
 
             return View();
         }

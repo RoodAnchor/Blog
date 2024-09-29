@@ -4,9 +4,11 @@ using Blog.Logic.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Blog.Presentation.Utils;
 
 namespace Blog.Presentation.Controllers;
 
+[ExceptionHandler]
 [Route("[controller]")]
 public class SignInController : Controller
 {
