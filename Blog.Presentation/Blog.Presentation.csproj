@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog.Database" Version="5.3.4" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.14" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blog.Logic\Blog.Logic.csproj">
       <Private>True</Private>
     </ProjectReference>

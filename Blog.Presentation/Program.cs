@@ -9,6 +9,8 @@ using Blog.Presentation.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using NLog;
+using NLog.Web;
 
 namespace Blog.Presentation;
 
@@ -24,6 +26,10 @@ public class Program
     {
         var dbPath = Path.Combine(AppContext.BaseDirectory, "DB", "blog.db");
         var builder = WebApplication.CreateBuilder(args);
+        var logger = LogManager
+            .Setup()
+            .LoadConfigurationFromAppSettings()
+            .GetCurrentClassLogger();
 
         builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
         builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlite($"Data Source={dbPath}"))
@@ -37,6 +43,7 @@ public class Program
         builder.Services.AddScoped<ICommentService, CommentService>();
         builder.Services.AddScoped<ITagService, TagService>();
         builder.Services.AddScoped<IRoleService, RoleService>();
+        builder.Services.AddScoped<ILogService, LogService>();
 
         builder.Services.AddScoped<IAuthorizationHandler, OwnerOnlyHandler>();
 
@@ -63,6 +70,9 @@ public class Program
             options.AddPolicy("OwnerOnly", policy => policy.AddRequirements(new OwnerOnlyRequirement(true)));
         });
 
+        builder.Logging.ClearProviders();
+        builder.Host.UseNLog();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -76,10 +86,10 @@ public class Program
         app.UseStatusCodePages(async context => 
         {
             if (context.HttpContext.Response.StatusCode == 404)
-                context.HttpContext.Response.Redirect("/Errors/ResourceNotFound");
+                context.HttpContext.Response.Redirect($"/Errors/ResourceNotFound?RequestUrl={context.HttpContext.Request.Path}");
 
             if (context.HttpContext.Response.StatusCode == 401)
-                context.HttpContext.Response.Redirect("/Errors/AccessDenied");
+                context.HttpContext.Response.Redirect($"/Errors/AccessDenied?ReturnUrl={context.HttpContext.Request.Path}");
         });
 
         app.UseHttpsRedirection();

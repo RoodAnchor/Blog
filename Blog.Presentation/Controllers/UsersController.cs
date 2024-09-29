@@ -8,21 +8,31 @@ namespace Blog.Presentation.Controllers;
 [Route("[controller]")]
 public class UsersController : Controller
 {
+    private readonly ILogger<UsersController> _logger;
     private readonly IUserService _userService;    
     private readonly IRoleService _roleService;
 
     public UsersController(
+        ILogger<UsersController> logger,
         IUserService userService,
         IRoleService roleService)
     {
+        _logger = logger;
         _userService = userService;
         _roleService = roleService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        return RedirectToAction("All");
     }
 
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Index(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var user = await _userService.GetUser(id);
 
         return View(user);
@@ -32,6 +42,8 @@ public class UsersController : Controller
     [Route("[action]")]
     public async Task<IActionResult> All()
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var users = await _userService.GetAllUsers();
 
         return View(users);
@@ -42,6 +54,8 @@ public class UsersController : Controller
     [Authorize(Policy = "OwnerOnly")]
     public async Task<IActionResult> Edit(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var vm = new EditUserViewModel();
 
         vm.Roles = _roleService.GetRoles();
@@ -60,6 +74,8 @@ public class UsersController : Controller
     [Authorize]
     public async Task<IActionResult> Edit(EditUserViewModel vm)
     {
+        _logger.LogInformation($"Log Entry: Редактирование пользователя. ID: {vm.User.Id}");
+
         vm.User.Roles = await GetRoles(vm.SelectedRoleIds);
 
         await _userService.UpdateUser(vm.User);
@@ -77,6 +93,8 @@ public class UsersController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> Delete(UserModel user)
     {
+        _logger.LogInformation($"Log Entry: Удаление пользователя. ID: {user.Id}");
+
         await _userService.DeleteUser(user.Id);
 
         return RedirectToAction("All");

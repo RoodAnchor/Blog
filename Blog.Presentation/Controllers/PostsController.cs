@@ -8,15 +8,18 @@ namespace Blog.Presentation.Controllers;
 [Route("[controller]")]
 public class PostsController : Controller
 {
+    private readonly ILogger<PostsController> _logger;
     private readonly IPostService _postService;
     private readonly ITagService _tagService;
     private readonly IUserService _userService;
 
     public PostsController(
+        ILogger<PostsController> logger,
         IPostService postService,
         ITagService tagService,
         IUserService userService)
     {
+        _logger = logger;
         _postService = postService;
         _tagService = tagService;
         _userService = userService;
@@ -26,6 +29,8 @@ public class PostsController : Controller
     [Route("[action]")]
     public async Task<IActionResult> All()
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var posts = await _postService.GetPosts();
 
         return View(posts);
@@ -35,6 +40,8 @@ public class PostsController : Controller
     [Route("[action]/{id}")]
     public async Task<IActionResult> Author(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var posts = await _postService.GetPostsByAuthor(id);
 
         return View("All", posts);
@@ -44,6 +51,8 @@ public class PostsController : Controller
     [Route("[action]/{id}")]
     public async Task<IActionResult> Tag(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var posts = await _postService.GetPostsByTag(id);
 
         return View("All", posts);
@@ -58,6 +67,8 @@ public class PostsController : Controller
     [Route("{id}")]
     public async Task<IActionResult> Index(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var vm = new PostViewModel();
         vm.Post = await _postService.GetPost(id);        
 
@@ -73,6 +84,8 @@ public class PostsController : Controller
     [Authorize]
     public async Task<IActionResult> Add()
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var vm = new CreatePostViewModel();
         vm.Tags = await _tagService.GetTags();        
 
@@ -89,6 +102,8 @@ public class PostsController : Controller
     [Authorize]
     public async Task<IActionResult> Add(CreatePostViewModel vm)
     {
+        _logger.LogInformation($"Log Entry: Добавление статьи");
+
         vm.Post.Tags = await GetTags(vm.SelectedTagIds);
         vm.Post.User = await _userService.GetUser(User.Identity?.Name!);
         vm.Tags = await _tagService.GetTags();
@@ -106,6 +121,8 @@ public class PostsController : Controller
     [Authorize(Policy = "OwnerOnly")]
     public async Task<IActionResult> Edit(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var vm = new EditPostViewModel();
 
         vm.Tags = await _tagService.GetTags();
@@ -124,6 +141,8 @@ public class PostsController : Controller
     [Authorize]
     public async Task<IActionResult> Edit(EditPostViewModel vm)
     {
+        _logger.LogInformation($"Log Entry: Редактирование статьи. ID {vm.Post.Id}");
+
         vm.Post.Tags = await GetTags(vm.SelectedTagIds);
 
         if (!ModelState.IsValid)
@@ -144,6 +163,8 @@ public class PostsController : Controller
     [Authorize]
     public async Task<IActionResult> Delete(PostViewModel vm)
     {
+        _logger.LogInformation($"Log Entry: Удаление статьи. ID {vm.Post.Id}");
+
         var post = await _postService.GetPost(vm.Post.Id);
 
         await _postService.DeletePost(post);

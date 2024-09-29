@@ -7,16 +7,22 @@ namespace Blog.Presentation.Controllers;
 [Route("[controller]")]
 public class SignUpController : Controller
 {
+    private readonly ILogger<SignUpController> _logger;
     private readonly IUserService _userService;
 
-    public SignUpController(IUserService userService)
+    public SignUpController(
+        ILogger<SignUpController> logger,
+        IUserService userService)
     {
+        _logger = logger;
         _userService = userService;
     }
 
     [HttpGet]
     public IActionResult Index()
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         return View();
     }
 
@@ -27,6 +33,8 @@ public class SignUpController : Controller
             return View(newUser);
 
         var user = await _userService.RegisterUser(newUser);
+
+        _logger.LogInformation($"Log Entry: Успешная регистрация. Email: {newUser.Email}");
 
         return RedirectToAction("All", "Posts");
     }

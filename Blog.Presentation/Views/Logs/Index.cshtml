@@ -1,0 +1,44 @@
+﻿@model LogsViewModel
+
+@{
+    ViewData["Title"] = "Логи";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_PaginationPartial" model="Model"/>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Level</th>
+                <th scope="col">Date</th>
+                <th scope="col">User Email</th>
+                <th scope="col">Client IP</th>
+                <th scope="col">Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.Logs)
+            {
+                <tr class="@(entry.Level == "Error" ? "table-danger" : null) @(entry.Level == "Warn" ? "table-warning" : null)">
+                    <td>@entry.Level</td>
+                    <td>@entry.Date</td>
+                    <td>
+                        @if(entry.User != null)
+                        {
+                            <a asp-action="Index" asp-controller="Users" asp-route-id="@entry.User.Id">@entry.UserEmail</a>
+                        }
+                        else
+                        {
+                            @entry.UserEmail
+                        }
+                    </td>
+                    <td>@entry.ClientIP</td>
+                    <td>@entry.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

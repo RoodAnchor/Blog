@@ -13,5 +13,6 @@ public class MappingProfile : Profile
         CreateMap<TagEntity, TagModel>().ReverseMap();
         CreateMap<PostEntity, PostModel>().ReverseMap();
         CreateMap<CommentEntity, CommentModel>().ReverseMap();
+        CreateMap<LogEntity, LogModel>().ReverseMap();
     }
 }

@@ -8,13 +8,16 @@ namespace Blog.Presentation.Controllers;
 [Route("[controller]")]
 public class CommentsController : Controller
 {
+    private readonly ILogger<CommentsController> _logger;
     private readonly ICommentService _commentService;
     private readonly IUserService _userService;
 
     public CommentsController(
+        ILogger<CommentsController> logger,
         ICommentService commentService,
         IUserService userService)
     {
+        _logger = logger;
         _commentService = commentService;
         _userService = userService;
     }
@@ -29,6 +32,8 @@ public class CommentsController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> Index(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var comment = await _commentService.GetComment(id);
 
         return View(comment);
@@ -39,6 +44,8 @@ public class CommentsController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> All()
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var comments = _commentService.GetComments();
 
         return View(comments);
@@ -54,6 +61,8 @@ public class CommentsController : Controller
     [Authorize]
     public async Task<IActionResult> Add(PostViewModel vm)
     {
+        _logger.LogInformation($"Log Entry: Добавление комментария");
+
         var user = await _userService.GetUser(User.Identity?.Name!);
         var comment = vm.Comment;
 
@@ -78,6 +87,8 @@ public class CommentsController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> Edit(int id)
     {
+        _logger.LogInformation($"Log Entry: Просмотр страницы {Request.Path}");
+
         var comment = await _commentService.GetComment(id);
 
         return View(comment);
@@ -93,6 +104,8 @@ public class CommentsController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> Edit(CommentModel comment)
     {
+        _logger.LogInformation($"Log Entry: Обновление комментария. ID: {comment.Id}");
+
         if (!ModelState.IsValid)
             return View(comment);
 
@@ -111,6 +124,8 @@ public class CommentsController : Controller
     [Authorize(Roles = "Администратор,Модератор")]
     public async Task<IActionResult> Delete(CommentModel comment)
     {
+        _logger.LogInformation($"Log Entry: Удаление комментария. ID: {comment.Id}");
+
         await _commentService.DeleteComment(comment);
 
         return RedirectToAction("All");
