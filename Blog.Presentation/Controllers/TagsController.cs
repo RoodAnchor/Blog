@@ -120,7 +120,7 @@ public class TagsController : Controller
     {
         _logger.LogInformation($"Log Entry: Удаление тега. ID: {tag.Id}");
 
-        await _tagService.DeleteTag(tag.Id);
+        await _tagService.DeleteTag(tag);
 
         return RedirectToAction("All");
     }

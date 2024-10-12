@@ -8,5 +8,5 @@ public interface ITagService
     public Task<TagModel> GetTag(int id);
     public Task<List<TagModel>> GetTags();
     public Task UpdateTag(TagModel tag);
-    public Task DeleteTag(int id);
+    public Task DeleteTag(TagModel tag);
 }

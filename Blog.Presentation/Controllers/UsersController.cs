@@ -95,7 +95,7 @@ public class UsersController : Controller
     {
         _logger.LogInformation($"Log Entry: Удаление пользователя. ID: {user.Id}");
 
-        await _userService.DeleteUser(user.Id);
+        await _userService.DeleteUser(user);
 
         return RedirectToAction("All");
     }

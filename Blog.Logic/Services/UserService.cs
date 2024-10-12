@@ -79,7 +79,7 @@ public class UserService : IUserService
     {
         var entity = await _userRepo!.Get(updatedUser.Id);
 
-        if (entity == null) return;
+        if (entity == null) throw new UserNotFoundException();
 
         entity.MergeChanges(updatedUser);
 
@@ -96,9 +96,9 @@ public class UserService : IUserService
         await _userRepo.Update(entity);
     }
 
-    public async Task DeleteUser(int id)
+    public async Task DeleteUser(UserModel user)
     {
-        var entity = await _userRepo!.Get(id);
+        var entity = await _userRepo!.Get(user.Id);
 
         if (entity != null)
             await _userRepo.Delete(entity);

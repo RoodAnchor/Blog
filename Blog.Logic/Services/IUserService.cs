@@ -10,5 +10,5 @@ public interface IUserService
     public Task<UserModel?> GetUser(string email);
     public Task<List<UserModel>> GetAllUsers();
     public Task UpdateUser(UserModel user);
-    public Task DeleteUser(int id);
+    public Task DeleteUser(UserModel user);
 }

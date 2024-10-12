@@ -57,9 +57,9 @@ public class TagService : ITagService
         await _repo.Update(entity);
     }
 
-    public async Task DeleteTag(int id)
+    public async Task DeleteTag(TagModel tag)
     {
-        var entity = await _repo!.Get(id);
+        var entity = await _repo!.Get(tag.Id);
 
         if (entity == null) throw new TagNotFoundException();
 

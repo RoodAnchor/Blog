@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Blog.API.Contracts\Blog.API.Contracts.csproj" />
     <ProjectReference Include="..\Blog.Data\Blog.Data.csproj">
       <Private>True</Private>
     </ProjectReference>
