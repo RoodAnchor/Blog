@@ -23,7 +23,7 @@ public class Program
 
     public static void Main(string[] args)
     {
-        var dbPath = Path.Combine(AppContext.BaseDirectory, "DB", "blog.db");
+        var dbPath = Path.Combine(Path.GetFullPath(@".."), "Blog.Presentation", "bin", "Debug","net8.0", "DB", "blog.db");
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
